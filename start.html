@@ -1,0 +1,100 @@
+<html>
+<head>
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+	<div>Go lot it</div>
+	<p>Test me out</p>
+	<ul> </ul>
+	<svg></svg>
+	<svg width="500" height="300" id="svg1"></svg>
+	<button id="btn">Test Me</button>
+	<div id="jsonName"></div>
+	<script>
+		var divs = document.getElementsByTagName('div');
+		for (var i = 0; i < divs.length; i++) {
+			divs[i].style.setProperty('color', 'blue', null);
+		}
+		d3.select('p').style('color', 'green');
+		
+		d3.select("body")
+		  .selectAll("p")
+		  .data([4, 8, 15, 16, 23, 42])
+		  .enter().append("p")
+			.text(function(d) { return "I’m number " + d + "!"; }).exit().remove();
+			
+		var fruits = ['Mango', 'Apple', 'Orange', 'Banana'];			
+		d3.select('ul')
+			.selectAll('li')
+			.data(fruits)
+			.enter()
+			.append('li')
+			.text(function(d) { return d;});
+			
+		var svg = d3.select('svg');
+		svg.append('rect')
+			.attr('x', 100)
+			.attr('Y', 100)
+			.attr('width', 200)
+			.attr('height', 100)
+			.attr('fill', 'green');
+			
+		var data1 = [80, 120, 60, 150, 200];
+		var barHeight = 20;
+		var bar = d3.select('#svg1')
+				  .selectAll('rect')
+				  .data(data1)
+				  .enter()
+				  .append('rect')
+				  .attr('width', function(d) {  return d; })
+				  .attr('height', barHeight - 1)
+				  .attr('transform', function(d, i) {
+					return "translate(0," + i * barHeight + ")";
+				  });
+				  
+		d3.select('#btn')
+			.on('click', function() {
+				alert('You tested me!!');});
+				
+				
+		var data = [100, 400, 300, 900, 850, 1000]
+
+    var width = 500,
+        barHeight = 20,
+        margin = 1;
+
+    var scale = d3.scaleLinear()
+                 .domain([d3.min(data), d3.max(data)])
+                 .range([50, 500]);
+
+    var svg = d3.select("body")
+                  .append("svg")
+                  .attr("width", width)
+                  .attr("height", barHeight * data.length);
+
+    var g = svg.selectAll("g")
+                  .data(data)
+                  .enter()
+                  .append("g")
+                  .attr("transform", function (d, i) {
+                      return "translate(0," + i * barHeight + ")";
+                  });
+
+    g.append("rect")
+       .attr("width", function (d) {
+           return scale(d);
+       })
+       .attr("height", barHeight - margin)
+
+    g.append("text")
+       .attr("x", function (d) { return (scale(d)); })
+       .attr("y", barHeight / 2)
+       .attr("dy", ".35em")
+       .text(function (d) { return d; });
+	   
+	   d3.json('./data/users.json', function(data) {
+			console.log(data);
+	   });
+	</script>
+</body>
+</html>
